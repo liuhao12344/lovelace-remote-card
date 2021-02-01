@@ -65,9 +65,9 @@ class RemoteCard extends HTMLElement {
         var arr = script_entity.split('.');
         var domain = arr[0];
         var service = arr[1];
-        this._hass.callService(domain, service, data = {})
+        this._hass.callService(domain, service, {})
         // 震动
-        if (this.config.vibrate) {
+        if (this.config.vibrate && navigator.vibrate) {
             navigator.vibrate(100)
         }
     }
