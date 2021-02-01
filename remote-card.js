@@ -40,7 +40,7 @@ class RemoteCard extends HTMLElement {
         this.hacard.className = 'f-ha-card';
         this.hacard.innerHTML = this._htmlData();
         root.appendChild(this.hacard);
-        const $ = this.$ = this.shadow.querySelector.bind(this.hacard);
+        const $ = this.hacard.querySelector.bind(this.hacard);
         Object.keys(this.config.circle).forEach(key => {
             const ele = $(`#l${key}`)
             let value = this.config.circle[key]
