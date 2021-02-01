@@ -68,7 +68,7 @@ class RemoteCard extends HTMLElement {
         this._hass.callService(domain, service, {})
         // 震动
         if (this.config.vibrate && navigator.vibrate) {
-            navigator.vibrate(100)
+            navigator.vibrate(50)
         }
     }
 
