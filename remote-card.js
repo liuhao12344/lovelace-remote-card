@@ -8,8 +8,8 @@
  */
 
 console.info("%c REMOTE CARD \n%c Version 1.2 ",
-"color: orange; font-weight: bold; background: black", 
-"color: white; font-weight: bold; background: dimgray");
+    "color: orange; font-weight: bold; background: black",
+    "color: white; font-weight: bold; background: dimgray");
 
 class RemoteCard extends HTMLElement {
     constructor() {
@@ -20,13 +20,14 @@ class RemoteCard extends HTMLElement {
     set hass(hass) {
         this._hass = hass;
         this._entity = this.config.entity;
-        this.hacard.querySelector("#remote").className = this._hass.states[this._entity].state;
-
+        if (['not_home', 'off'].includes(this._hass.states[this._entity].state)) {
+            this.hacard.querySelector("#remote").className = "not_home";
+        }
     }
 
     setConfig(config) {
         if (!config.entity) {
-          throw new Error('你需要定义一个实体');
+            throw new Error('你需要定义一个实体');
         }
         this.config = deepClone(config);
 
@@ -39,54 +40,37 @@ class RemoteCard extends HTMLElement {
         this.hacard.className = 'f-ha-card';
         this.hacard.innerHTML = this._htmlData();
         root.appendChild(this.hacard);
-
-        if(this.config.left_buttons){
-            this.config.left_buttons.forEach(function(button){
+        const $ = this.$ = this.shadow.querySelector.bind(this.hacard);
+        Object.keys(this.config.circle).forEach(key => {
+            const ele = $(`#l${key}`)
+            let value = this.config.circle[key]
+            ele.onclick = () => this.selectMode(value)
+        })
+        if (this.config.left_buttons) {
+            this.config.left_buttons.forEach(function (button) {
                 let buttonBox = document.createElement('paper-button');
-                    buttonBox.innerHTML = `
+                buttonBox.innerHTML = `
                         <div class="lbicon">
-                            <ha-icon class="ha-icon" data-state="on" icon="`+button.icon+`"></ha-icon>
+                            <ha-icon class="ha-icon" data-state="on" icon="`+ button.icon + `"></ha-icon>
                         </div>
                     `;
-                    buttonBox.setAttribute("data-entity",button.entity)
-                    if(button.topic)buttonBox.setAttribute("data-topic",button.topic)
-                    if(button.payload)buttonBox.setAttribute("data-payload",button.payload)
-                    if(button.server)buttonBox.setAttribute("data-server",button.server)
-                    buttonBox.addEventListener('click', (e) => this.selectMode(e),false);
-                this.hacard.querySelector("#right_buttons").appendChild(buttonBox)    
+                buttonBox.addEventListener('click', (e) => this.selectMode(button.entity), false);
+                this.hacard.querySelector("#right_buttons").appendChild(buttonBox)
             }, this)
         }
 
-      }
-
-      selectMode(e) {
-        console.log(e);
-        var entity = e.currentTarget.dataset.entity;
-        var topic = e.currentTarget.dataset.topic;
-        var payload = e.currentTarget.dataset.payload;
-        var domain = entity.split('.')[0];
-        if(domain ==="qmtt" || topic || payload){
-            var data = {
-                'topic': topic,
-                'payload': payload,
-                'qos': 2,
-                'retain': false
-            }
-            this._hass.callService("mqtt", "publish", data)
-        }else if(domain ==="switch"){
-            var service = e.currentTarget.dataset.server?e.currentTarget.dataset.server:'toggle';
-            var data = {
-              'entity_id': entity
-            }
-            this._hass.callService(domain, service, data)
-        }else if(domain ==="script"){
-            var service = entity.split('.')[1];
-            var data = {}
-            this._hass.callService(domain, service, data)
-        }
     }
-      _htmlData(){
-          var html = `       
+
+    selectMode(script_entity) {
+        var arr = script_entity.split('.');
+        var domain = arr[0];
+        var service = arr[1];
+        var data = {}
+        this._hass.callService(domain, service, data)
+    }
+
+    _htmlData() {
+        var html = `       
           <div id="remote" class="remote_f">
               <div class="box">
               <div class="scale">
@@ -127,9 +111,9 @@ class RemoteCard extends HTMLElement {
                   </div>
               </div>
           </div>`
-          return html;
-      }
-      _cssData(){
+        return html;
+    }
+    _cssData() {
         var css = `
         #remote{
             display:flex;
@@ -294,27 +278,27 @@ class RemoteCard extends HTMLElement {
             background-color: var(--state-color-off);
         }`
         return css;
-      }
-      // The height of your card. Home Assistant uses this to automatically
-      // distribute all cards over the available columns.
-      getCardSize() {
+    }
+    // The height of your card. Home Assistant uses this to automatically
+    // distribute all cards over the available columns.
+    getCardSize() {
         return 1;
-      }
+    }
 }
 
 function deepClone(value) {
     if (!(!!value && typeof value == 'object')) {
-      return value;
+        return value;
     }
     if (Object.prototype.toString.call(value) == '[object Date]') {
-      return new Date(value.getTime());
+        return new Date(value.getTime());
     }
     if (Array.isArray(value)) {
-      return value.map(deepClone);
+        return value.map(deepClone);
     }
     var result = {};
     Object.keys(value).forEach(
-      function(key) { result[key] = deepClone(value[key]); });
+        function (key) { result[key] = deepClone(value[key]); });
     return result;
-  }
+}
 customElements.define('lovelace-remote-card', RemoteCard);
