@@ -48,6 +48,70 @@ left_buttons:
   - entity: script.yao_kong_volume_up
     icon: 'mdi:volume-plus'
 ```
+
+小米电视遥控
+```yaml
+type: 'custom:lovelace-remote-card'
+vibrate: true
+entity: media_player.xiao_mi_dian_shi
+circle:
+  ok: 
+    service: remote.send_command
+    data:
+      command: enter
+      entity_id: remote.xiao_mi_dian_shi
+  up: 
+    service: remote.send_command
+    data:
+      command: up
+      entity_id: remote.xiao_mi_dian_shi
+  down: 
+    service: remote.send_command
+    data:
+      command: down
+      entity_id: remote.xiao_mi_dian_shi
+  left: 
+    service: remote.send_command
+    data:
+      command: left
+      entity_id: remote.xiao_mi_dian_shi
+  right: 
+    service: remote.send_command
+    data:
+      command: right
+      entity_id: remote.xiao_mi_dian_shi
+left_buttons:
+  - icon: 'mdi:power'
+    service: remote.send_command
+    data:
+      command: power
+      entity_id: remote.xiao_mi_dian_shi
+  - icon: 'mdi:keyboard-return'
+    service: remote.send_command
+    data:
+      command: back
+      entity_id: remote.xiao_mi_dian_shi
+  - icon: 'mdi:home'
+    service: remote.send_command
+    data:
+      command: home
+      entity_id: remote.xiao_mi_dian_shi
+  - icon: 'mdi:menu'
+    service: remote.send_command
+    data:
+      command: menu
+      entity_id: remote.xiao_mi_dian_shi
+  - icon: 'mdi:volume-minus'
+    service: remote.send_command
+    data:
+      command: volumedown
+      entity_id: remote.xiao_mi_dian_shi
+  - icon: 'mdi:volume-plus'
+    service: remote.send_command
+    data:
+      command: volumeup
+      entity_id: remote.xiao_mi_dian_shi
+```
 ## 属性
 
 !> 注意：只支持script

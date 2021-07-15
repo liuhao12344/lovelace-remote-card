@@ -41,11 +41,19 @@ class RemoteCard extends HTMLElement {
         this.hacard.innerHTML = this._htmlData();
         root.appendChild(this.hacard);
         const $ = this.hacard.querySelector.bind(this.hacard);
+        // 环形按钮
         Object.keys(this.config.circle).forEach(key => {
             const ele = $(`#l${key}`)
             let value = this.config.circle[key]
-            ele.onclick = () => this.selectMode(value)
+            ele.onclick = () => {
+                if (typeof value === 'string') {
+                    this.selectMode(value)
+                } else {
+                    this.selectMode(value.service, value.data)
+                }
+            }
         })
+        // 左侧按钮
         if (this.config.left_buttons) {
             this.config.left_buttons.forEach(function (button) {
                 let buttonBox = document.createElement('paper-button');
@@ -54,18 +62,24 @@ class RemoteCard extends HTMLElement {
                             <ha-icon class="ha-icon" data-state="on" icon="`+ button.icon + `"></ha-icon>
                         </div>
                     `;
-                buttonBox.addEventListener('click', (e) => this.selectMode(button.entity), false);
+                buttonBox.addEventListener('click', (e) => {
+                    if ('entity' in button) {
+                        this.selectMode(button.entity)
+                    } else {
+                        this.selectMode(button.service, button.data)
+                    }
+                }, false);
                 this.hacard.querySelector("#right_buttons").appendChild(buttonBox)
             }, this)
         }
 
     }
 
-    selectMode(script_entity) {
-        var arr = script_entity.split('.');
+    selectMode(service_name, data = {}) {
+        var arr = service_name.split('.');
         var domain = arr[0];
         var service = arr[1];
-        this._hass.callService(domain, service, {})
+        this._hass.callService(domain, service, data)
         // 震动
         if (this.config.vibrate && navigator.vibrate) {
             navigator.vibrate(50)
