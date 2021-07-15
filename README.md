@@ -114,7 +114,7 @@ left_buttons:
 ```
 ## 属性
 
-!> 注意：只支持script
+> 注意：只支持script
 
 - `circle`
   * `up` 上 
