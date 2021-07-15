@@ -25,6 +25,99 @@ class RemoteCard extends HTMLElement {
         }
     }
 
+    // 自定义默认配置
+    static getStubConfig() {
+        return {
+            vibrate: true,
+            entity: 'media_player.xiao_mi_dian_shi',
+            circle: {
+                ok: {
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'enter',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                up: {
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'up',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                down: {
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'down',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                }, left: {
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'left',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                }, right: {
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'right',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                }
+            },
+            left_buttons: [
+                {
+                    icon: 'mdi:power',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'power',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    },
+                },
+                {
+                    icon: 'mdi:keyboard-return',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'back',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:home',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'home',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:menu',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'menu',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:volume-minus',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'volumedown',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:volume-plus',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'volumeup',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+            ]
+        }
+    }
+
     setConfig(config) {
         if (!config.entity) {
             throw new Error('你需要定义一个实体');
@@ -320,3 +413,12 @@ function deepClone(value) {
     return result;
 }
 customElements.define('lovelace-remote-card', RemoteCard);
+
+// 添加预览
+window.customCards = window.customCards || [];
+window.customCards.push({
+    type: "lovelace-remote-card",
+    name: "遥控器面板",
+    preview: true,
+    description: "遥控器卡片"
+});
