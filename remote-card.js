@@ -1,16 +1,3 @@
-/*
- * @Author        : fineemb
- * @Github        : https://github.com/fineemb
- * @Description   : 
- * @Date          : 2019-10-28 16:19:56
- * @LastEditors   : fineemb
- * @LastEditTime  : 2020-04-19 23:56:10
- */
-
-console.info("%c REMOTE CARD \n%c Version 1.2 ",
-    "color: orange; font-weight: bold; background: black",
-    "color: white; font-weight: bold; background: dimgray");
-
 class RemoteCard extends HTMLElement {
     constructor() {
         super();
@@ -457,8 +444,6 @@ class RemoteCard extends HTMLElement {
         }`
         return css;
     }
-    // The height of your card. Home Assistant uses this to automatically
-    // distribute all cards over the available columns.
     getCardSize() {
         return 1;
     }
