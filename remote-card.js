@@ -65,7 +65,57 @@ class RemoteCard extends HTMLElement {
                     }
                 }
             },
-            left_buttons: [
+            right_buttons: [
+                {
+                    icon: 'mdi:power',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'power',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    },
+                },
+                {
+                    icon: 'mdi:keyboard-return',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'back',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:home',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'home',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:menu',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'menu',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:volume-minus',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'volumedown',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+                {
+                    icon: 'mdi:volume-plus',
+                    service: 'remote.send_command',
+                    data: {
+                        command: 'volumeup',
+                        entity_id: 'remote.xiao_mi_dian_shi'
+                    }
+                },
+            ],
+            bottom_buttons: [
                 {
                     icon: 'mdi:power',
                     service: 'remote.send_command',
@@ -147,8 +197,8 @@ class RemoteCard extends HTMLElement {
             }
         })
         // 左侧按钮
-        if (this.config.left_buttons) {
-            this.config.left_buttons.forEach(function (button) {
+        if (this.config.right_buttons) {
+            this.config.right_buttons.forEach(function (button) {
                 let buttonBox = document.createElement('paper-button');
                 buttonBox.innerHTML = `
                         <div class="lbicon">
@@ -163,6 +213,25 @@ class RemoteCard extends HTMLElement {
                     }
                 }, false);
                 this.hacard.querySelector("#right_buttons").appendChild(buttonBox)
+            }, this)
+        }
+        // 底部按钮
+        if (this.config.bottom_buttons) {
+            this.config.bottom_buttons.forEach(function (button) {
+                let buttonBox = document.createElement('paper-button');
+                buttonBox.innerHTML = `
+                        <div class="lbicon">
+                            <ha-icon class="ha-icon" data-state="on" icon="`+ button.icon + `"></ha-icon>
+                        </div>
+                    `;
+                buttonBox.addEventListener('click', (e) => {
+                    if ('entity' in button) {
+                        this.selectMode(button.entity)
+                    } else {
+                        this.selectMode(button.service, button.data)
+                    }
+                }, false);
+                this.hacard.querySelector("#bottom_buttons").appendChild(buttonBox)
             }, this)
         }
 
@@ -181,46 +250,48 @@ class RemoteCard extends HTMLElement {
 
     _htmlData() {
         var html = `       
-          <div id="remote" class="remote_f">
-              <div class="box">
-              <div class="scale">
-              <div class="button-group">
-                  <div class="outter-circle">
-                      <div class="inner-parts up">
-                          <div class = "iconbox">
-                              <div class = "ficon"></div>
-                          </div>
-                          <div id="lup" class="tap up"></div>
-                      </div>
-                      <div class="inner-parts right">
-                          <div class = "iconbox">
-                              <div class = "ficon"></div>
-                          </div>
-                          <div id="lright" class="tap right"></div>
-                      </div>
-                      <div class="inner-parts left">
-                          <div class = "iconbox">
-                              <div class = "ficon"></div>
-                          </div>
-                          <div id="lleft" class="tap left"></div>
-                      </div>
-                      <div class="inner-parts down">
-                          <div class = "iconbox">
-                              <div class = "ficon"></div>
-                          </div>
-                          <div id="ldown" class="tap down"></div>
-                      </div>
-                      <div id="lok" class="inner-circle ok">
-                      </div>        
-                  </div>
-              </div>  
-              </div>
-              </div>  
-              <div class="boxb">
-                  <div id="right_buttons">
-                  </div>
-              </div>
-          </div>`
+        <div id="remote" class="remote_f">
+            <div class="box">
+                <div class="scale">
+                    <div class="button-group">
+                        <div class="outter-circle">
+                            <div class="inner-parts up">
+                                <div class="iconbox">
+                                    <div class="ficon"></div>
+                                </div>
+                                <div id="lup" class="tap up"></div>
+                            </div>
+                            <div class="inner-parts right">
+                                <div class="iconbox">
+                                    <div class="ficon"></div>
+                                </div>
+                                <div id="lright" class="tap right"></div>
+                            </div>
+                            <div class="inner-parts left">
+                                <div class="iconbox">
+                                    <div class="ficon"></div>
+                                </div>
+                                <div id="lleft" class="tap left"></div>
+                            </div>
+                            <div class="inner-parts down">
+                                <div class="iconbox">
+                                    <div class="ficon"></div>
+                                </div>
+                                <div id="ldown" class="tap down"></div>
+                            </div>
+                            <div id="lok" class="inner-circle ok">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="boxb">
+                <div id="right_buttons">
+                </div>
+            </div>
+        </div>
+        <div id="bottom_buttons"></div>
+    `
         return html;
     }
     _cssData() {

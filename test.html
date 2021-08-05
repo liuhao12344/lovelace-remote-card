@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div id="remote" class="remote_f">
+        <div class="box">
+            <div class="scale">
+                <div class="button-group">
+                    <div class="outter-circle">
+                        <div class="inner-parts up">
+                            <div class="iconbox">
+                                <div class="ficon"></div>
+                            </div>
+                            <div id="lup" class="tap up"></div>
+                        </div>
+                        <div class="inner-parts right">
+                            <div class="iconbox">
+                                <div class="ficon"></div>
+                            </div>
+                            <div id="lright" class="tap right"></div>
+                        </div>
+                        <div class="inner-parts left">
+                            <div class="iconbox">
+                                <div class="ficon"></div>
+                            </div>
+                            <div id="lleft" class="tap left"></div>
+                        </div>
+                        <div class="inner-parts down">
+                            <div class="iconbox">
+                                <div class="ficon"></div>
+                            </div>
+                            <div id="ldown" class="tap down"></div>
+                        </div>
+                        <div id="lok" class="inner-circle ok">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxb">
+            <div id="right_buttons">
+            </div>
+        </div>
+    </div>
+    <script src="remote-card.js"></script>
+    <lovelace-remote-card></lovelace-remote-card>
+    <script>
+        const card = document.querySelector('lovelace-remote-card')
+        card.setConfig(RemoteCard.getStubConfig())
+    </script>
+</body>
+
+</html>
