@@ -21,47 +21,51 @@ class RemoteCard extends HTMLElement {
         this._hass = hass;
         this._entity = this.config.entity;
         if (['not_home', 'off'].includes(this._hass.states[this._entity].state)) {
-            this.hacard.querySelector("#remote").className = "not_home";
+            if (this.hacard && !this.hacard.classList.contains('not_home')) {
+                this.hacard.classList.add('not_home')
+            }
         }
     }
 
     // 自定义默认配置
     static getStubConfig() {
+        const defaultEntity = 'media_player.xiao_mi_dian_shi'
+        const defaultRemote = 'remote.xiao_mi_dian_shi'
         return {
             vibrate: true,
-            entity: 'media_player.xiao_mi_dian_shi',
+            entity: defaultEntity,
             circle: {
                 ok: {
                     service: 'remote.send_command',
                     data: {
                         command: 'enter',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 up: {
                     service: 'remote.send_command',
                     data: {
                         command: 'up',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 down: {
                     service: 'remote.send_command',
                     data: {
                         command: 'down',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 }, left: {
                     service: 'remote.send_command',
                     data: {
                         command: 'left',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 }, right: {
                     service: 'remote.send_command',
                     data: {
                         command: 'right',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 }
             },
@@ -71,7 +75,7 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'power',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     },
                 },
                 {
@@ -79,7 +83,7 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'back',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 {
@@ -87,7 +91,7 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'home',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 {
@@ -95,7 +99,7 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'menu',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 {
@@ -103,7 +107,7 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'volumedown',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
                 {
@@ -111,58 +115,50 @@ class RemoteCard extends HTMLElement {
                     service: 'remote.send_command',
                     data: {
                         command: 'volumeup',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        entity_id: defaultRemote
                     }
                 },
             ],
             bottom_buttons: [
                 {
-                    icon: 'mdi:power',
-                    service: 'remote.send_command',
+                    icon: 'mdi:music-box',
+                    service: 'media_player.select_source',
                     data: {
-                        command: 'power',
-                        entity_id: 'remote.xiao_mi_dian_shi'
+                        source: 'QQ音乐',
+                        entity_id: defaultEntity
                     },
                 },
                 {
-                    icon: 'mdi:keyboard-return',
-                    service: 'remote.send_command',
+                    icon: 'mdi:movie-open-settings',
+                    service: 'media_player.select_source',
                     data: {
-                        command: 'back',
-                        entity_id: 'remote.xiao_mi_dian_shi'
-                    }
+                        source: '银河奇异果',
+                        entity_id: defaultEntity
+                    },
                 },
                 {
-                    icon: 'mdi:home',
-                    service: 'remote.send_command',
+                    icon: 'mdi:cat',
+                    service: 'media_player.select_source',
                     data: {
-                        command: 'home',
-                        entity_id: 'remote.xiao_mi_dian_shi'
-                    }
+                        source: 'CIBN酷喵',
+                        entity_id: defaultEntity
+                    },
                 },
                 {
-                    icon: 'mdi:menu',
-                    service: 'remote.send_command',
+                    icon: 'mdi:cloud',
+                    service: 'media_player.select_source',
                     data: {
-                        command: 'menu',
-                        entity_id: 'remote.xiao_mi_dian_shi'
-                    }
+                        source: '云视听极光',
+                        entity_id: defaultEntity
+                    },
                 },
                 {
-                    icon: 'mdi:volume-minus',
-                    service: 'remote.send_command',
+                    icon: 'mdi:kodi',
+                    service: 'media_player.select_source',
                     data: {
-                        command: 'volumedown',
-                        entity_id: 'remote.xiao_mi_dian_shi'
-                    }
-                },
-                {
-                    icon: 'mdi:volume-plus',
-                    service: 'remote.send_command',
-                    data: {
-                        command: 'volumeup',
-                        entity_id: 'remote.xiao_mi_dian_shi'
-                    }
+                        source: 'Kodi',
+                        entity_id: defaultEntity
+                    },
                 },
             ]
         }
@@ -300,14 +296,13 @@ class RemoteCard extends HTMLElement {
             display:flex;
             flex-wrap: wrap;
             justify-content: center;
-            --box-shadow:2px 2px 5px rgba(0, 0, 0, 0.3);
-            --button-shadow-color:#00bcd4;
-            --state-color-off: gray;
         }
         .f-ha-card{
             padding: 1pc;
             background: var(--paper-card-background-color);
-            
+            --box-shadow:2px 2px 5px rgba(0, 0, 0, 0.3);
+            --button-shadow-color:#00bcd4;
+            --state-color-off: gray;
         }
 
         .box {
@@ -420,7 +415,8 @@ class RemoteCard extends HTMLElement {
         .tap:active{
             box-shadow: 2px 2px 5px var(--accent-color);
         }
-        #right_buttons {
+        #right_buttons,
+        #bottom_buttons {
             display: flex;
             flex-wrap: wrap;
             align-content: center;
