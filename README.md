@@ -1,11 +1,3 @@
-<!--
- * @Author        : fineemb
- * @Github        : https://github.com/fineemb
- * @Description   : 
- * @Date          : 2019-10-31 12:03:02
- * @LastEditors   : fineemb
- * @LastEditTime  : 2020-04-19 23:53:11
- -->
 lovelace-remote-card
 ================================================
 
